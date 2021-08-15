@@ -1,0 +1,125 @@
+
+
+
+
+@media only screen and (max-width: 414px) {
+    .container-fluid{
+        padding-bottom: 3em;
+    }
+    thead th:not(:first-child) {
+        display: none;
+    }
+    td, th {
+        display: block;
+        clear: both;
+    }
+    td[data-th]:before {
+        content: attr(data-th);
+        float: left;
+    }
+    
+    .container-fluid {
+        padding-right: 0!important;
+        padding-left: 0!important;
+    }
+    .btn-group{ 
+        border-radius: 12px!important;
+        margin: 0.5em 1em;
+    }
+    .hulk-sponsor{
+        margin-left: 0.5em;
+    }
+    .table_div_line{
+        display: block;
+    }
+    body.hulk-dark .card{
+        border-radius: 0!important;
+    }
+    .pl-2{
+        padding-left: 0!important;
+    }
+    .pr-2{
+        padding-right: 0!important;
+    }
+}
+@media (max-width: 375px) {
+    .wrapper{
+        margin-top: 4em;
+    }
+    .hulk-logo{
+        padding-left: 0.6em!important;
+    }
+    .content-wrapper.fullView{
+        display: none;
+    }
+    .hulk-header {
+        height: 80px;
+    }
+    .container-fluid{
+        padding-bottom: 3em;
+    }
+    .btn-group > button{ 
+        border-radius: 12px!important;
+        margin: 0.5em 1em;
+    }
+    .market_overview{
+        margin-left: 28px;
+        margin-right: auto;
+    }
+    .hulk-sponsor{
+        margin-left: 0.5em;
+    }
+    .card-body{
+        padding: 0!important;
+    }
+    body.hulk-dark .card{
+        border-radius: 0!important;
+    }
+    .pl-2{
+        padding-left: 0!important;
+    }
+    .pr-2{
+        padding-right: 0!important;
+    }
+}
+@media (max-width: 320px) {
+    .container-fluid{
+        padding-bottom: 3em;
+    }
+    .market_overview{
+        margin-left: 28px;
+        margin-right: auto;
+    }
+    .btn-group{ 
+        border-radius: 12px!important;
+        margin: 0.5em 1em;
+    }
+    .hulk-sponsor{
+        margin-left: 0.5em;
+    }
+    body.hulk-dark .card{
+        border-radius: 0!important;
+    }
+    .pl-2{
+        padding-left: 0!important;
+    }
+    .pr-2{
+        padding-right: 0!important;
+    }
+}
+
+
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+// query based on height
+
+@media only screen and (max-height: 812px) {
+    .mobile-table{
+        height: 600px;
+    }
+}
+
+.mobile-table{
+    height: 300px;
+}

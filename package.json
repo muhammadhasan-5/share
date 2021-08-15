@@ -1,0 +1,20 @@
+{
+  "name": "hulktoken",
+  "version": "1.0.0",
+  "description": "HulkToken Template Interface App",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcelo Motta",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "gulp-sass": "^4.0.2",
+    "jquery": "^3.6.0",
+    "popper.js": "^1.16.1"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}

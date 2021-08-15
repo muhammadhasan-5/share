@@ -1,0 +1,158 @@
+
+    /*---- Dark ----*/
+.card{
+    border-radius: 0.8rem;
+}
+.card-header{
+    margin-top: 0!important;
+    margin-bottom: 0.5;
+}
+.card-header p{
+    margin-bottom: 0.5em;
+}
+.card-header h3, .card-header h4 {
+    font-weight: 200;
+    color: $cinza3;
+    & strong{
+        color: $branco;
+        font-weight: 600;
+        font-size: 1.2em;
+    }
+    & span{
+        font-size: 0.6em;
+        margin-left: 0.6em;
+    }
+    & i{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}
+.ads-card{
+    height: 100px;
+}
+
+.hulk-card{
+    background-color: $primary !important;
+    align-items: center;
+    display: inline-flex;
+    justify-content: space-evenly;
+    border-radius:0.35rem;
+    height: 16vh;
+}
+.hulk-btn{
+    // background-color: $verde !important;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    border-radius:0.35rem;
+    height: 16vh;
+}
+.card-header{
+    margin-top: 1rem!important;
+    margin-bottom:1rem!important;
+}
+.card-title{
+    margin-top: 1rem!important;
+    margin-bottom:1rem!important;
+}
+// .card-text{
+//     margin-bottom:1rem!important;
+// }
+.card-body i{
+    color: $cinza3;
+}
+.wrapper{
+    margin-top: 5em;
+}
+
+.swap{
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.swap_value, .swap_value h5{
+    display: contents;
+    color: white!important;
+    font-weight: 600;
+}
+.table thead th, .table.table-head-fixed thead tr th {
+    border: 0 !important;
+    font-weight: 300;
+    color: $cinza3
+}
+.table-coins{
+    color: $branco!important;
+    & thead {
+        background-color: transparent;
+        border: 0!important;
+    }
+    & tbody tr td {
+        font-weight: 600;
+    }
+}
+.table.table-head-fixed thead tr:nth-child(1) th{
+    box-shadow: none!important;
+}
+.table-hover tbody tr:hover{
+    background-color: lighten($color: $preto, $amount: 0.35);
+    color: $branco!important;
+    cursor: pointer;
+}
+.table.table-head-fixed thead tr th {
+    background-color: $cinza1!important;
+}
+.menu-action-buttons button{
+    margin-right: 1em;
+}
+.danger, .danger i{
+    color: $vermelho!important;
+}
+.success, .success i{
+    color: $verde!important;
+}
+.text-lightgray {
+    color: $cinza!important;
+}
+.text-gray {
+    color: $cinza3!important;
+}
+.btn-default{
+    background-color: lighten($color: $preto, $amount: 0.35);
+    color: $branco!important;
+    border: none!important;
+    border-radius: 0.8em;
+}
+.btn-default:hover, .btn-default:active, .btn-default.hover{
+    color: $secondary;
+    background-color: $cinza2;
+}
+.tradingview-widget-container{
+    border-radius: $border_radius;
+    overflow: hidden;
+}
+.main-footer{
+    background: $box_background;
+}
+
+.mobile-table{
+    height: 300px;
+}
+
+.ads_banner{
+    width: 100%;
+    height: $ads_banner_height;
+    position: fixed;
+    bottom: 0;
+    z-index:9999;
+}
+
+.to-center{
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+.to-middle{
+    margin-top: auto!important;
+    margin-bottom: auto!important;
+}

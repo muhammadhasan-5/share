@@ -1,0 +1,218 @@
+
+/*---- deposit form ----*/
+.btn-connect{
+  width: 100%;
+  height: 16vh;
+}
+.deposit-form{}
+.hulk-radio-boxed{
+    position: relative;
+    display: inline-block;
+    width: 49%;
+}
+.hulk-radio-boxed:nth-child(odd){
+    margin-right: 4px;
+}
+.hulk-radio-boxed input[type=radio]{
+  position: absolute;
+  visibility: hidden;
+}
+
+.hulk-radio-boxed label{
+  display: block;
+  position: relative;
+  font-weight: 300;
+  font-size: 20px;
+  padding: 25px 25px 25px 56px;
+  margin: 5px auto;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+  border: 1px solid #f1f1f1;
+  font-weight: 600;
+}
+
+body.hulk-dark .hulk-radio-boxed label{
+  display: block;
+  color: #fff;
+  position: relative;
+  font-weight: 300;
+  font-size: 20px;
+  padding: 25px 25px 25px 56px;
+  margin: 5px auto;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+  border: 1px solid $verde;
+  font-weight: 600;
+}
+.hulk-radio-boxed label:hover{
+  border: 1px solid #ddd;
+}
+
+.hulk-radio-boxed:hover label{
+    color: #555;
+}
+.hulk-radio-boxed label img{
+    width: 25px;
+    float: right;
+}
+
+.hulk-radio-boxed .check{
+  display: block;
+  position: absolute;
+  border: 5px solid #AAAAAA;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  top: 38%;
+  left: 20px;
+  z-index: 5;
+  transition: border .25s linear;
+  -webkit-transition: border .25s linear;
+}
+
+.hulk-radio-boxed:hover .check {
+  border: 5px solid #888;
+}
+
+.hulk-radio-boxed .check::before {
+  display: block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 11px;
+  width: 11px;
+  top: 2px;
+  left: 2px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+label{
+  color: $cinza3;
+}
+
+.hulk-radio-boxed input[type=radio]:checked ~ .check {
+  border: 5px solid $verde2;
+}
+
+.hulk-radio-boxed input[type=radio]:checked ~ .check::before{
+  background: $verde2;
+}
+
+.hulk-radio-boxed input[type=radio]:checked ~ label{
+  color: $verde2;
+}
+
+select.hulk-image-select{
+    padding: 15px;
+    width: 100%;
+    border: 1px solid #f1f1f1;
+    outline: none;
+}
+body.hulk-dark select.hulk-image-select{
+    padding: 15px;
+    width: 100%;
+    border: 1px solid #2f3a56;
+    outline: none;
+    color:#ddd;
+    background: #131a33;
+}
+select.hulk-image-select option{}
+.input-text-select{}
+.input-text-select input[type=text]{
+    border-radius: 0;
+}
+.input-text-select select{
+    padding: 10px;
+    height: 50px;
+}
+.input-text-select .input-group-prepend{
+    width: 70%;
+}
+.hulk-input-lg{
+    height: 50px;
+}
+row.md-gutter [class*='col-'] {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+
+/* -- quantity box -- */
+
+.quantity {
+  display: inline-block; }
+ 
+ .quantity .input-text.qty {
+  // width: 35px;
+  // height: 39px;
+  padding: 0 5px;
+  text-align: center;
+  
+  // background-color: transparent;
+  // border: 1px solid #efefef;
+ }
+ @media (max-width: 414px){
+  .quantity.buttons_added{
+    white-space: pre-wrap!important;
+  }
+ }
+ 
+ .quantity.buttons_added {
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+  vertical-align: top; }
+ 
+ .quantity.buttons_added input {
+  display: inline-block;
+  margin: 0;
+  vertical-align: top;
+  box-shadow: none;
+ }
+ 
+ .quantity.buttons_added .minus,
+ .quantity.buttons_added .plus {
+  padding: 7px 10px 8px;
+  // width: 41px;
+  // height: 41px;
+  // background-color: transparent;
+  // border: 1px solid $cinza;
+  cursor:pointer;}
+ 
+ .quantity.buttons_added .minus {
+  border-right: 0; }
+ 
+ .quantity.buttons_added .plus {
+  border-left: 0; }
+ 
+ .quantity.buttons_added .minus:hover,
+ .quantity.buttons_added .plus:hover {
+  background: $cinza1; }
+ 
+ .quantity input::-webkit-outer-spin-button,
+ .quantity input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: 0; }
+  
+  .quantity.buttons_added .minus:focus,
+ .quantity.buttons_added .plus:focus {
+  outline: none; }
+ 
+.summary{
+  min-height: fit-content;
+  background-color: $cinza1;
+  border: 1px solid $cinza2;
+  border-radius: 0.35rem;
+  padding: 1rem 0.75rem 0.35rem 0.75rem;
+}
+.summary p{
+  color: $cinza2!important;
+  margin-bottom: 0.45rem !important;
+  line-height: 1.2rem;
+  font-size: 1rem;
+}

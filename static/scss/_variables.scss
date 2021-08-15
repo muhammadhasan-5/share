@@ -1,0 +1,47 @@
+
+
+// escala de cores 
+$preto: #040404;
+$vermelho : #de1314;
+$amarelo: #fdd247;
+$verde1 : #11970b;
+$verde2 : #4c6d13;
+
+$branco: white;
+$cinza: #EEEEEE;
+
+$cinza1: #252E2A;
+$cinza2: #585F5A;
+$cinza3: #939895;
+
+$dark: $preto !default;
+$primary: $verde1;
+$secondary: #42278E;
+
+// common theme variables
+//
+
+$hulk_font: 'Source Sans Pro', sans-serif;
+
+$border_radius: 1em;
+$menu_font: 1em;
+$ads_banner_height: 100px;
+
+$dark_background: #162301;
+$box_background: $preto;
+$text_color: #f7f7f7;
+$favorites_color: $verde1;
+$verde : $verde1;
+
+
+// cores do tema
+$theme-colors:(
+    "green":$verde1,
+    "primary":$primary,
+    "amarelo":$amarelo,
+    "dark": $cinza1,
+    "cinza":$cinza,
+    "cinza-escuro":$cinza1,
+    "cinza-claro":$cinza2,
+    "cinza-smoke":$cinza,
+);

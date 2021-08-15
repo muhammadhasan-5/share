@@ -1,0 +1,51 @@
+
+/*---------------------------------------
+------------------- chart -----------------
+--------------------------------------------*/
+.hulk-fulldiv-linechart{
+  // padding: 22px 0px 100px 0;
+  text-align: center;
+  position: relative;
+}
+.hulk-fulldiv-linechart:after{
+  position: absolute;
+  content: '';
+  width: calc(100% - 10px);
+  background: #fff;
+  top: 0;
+  left: 5px;
+  height: 100%;
+  z-index: -1;
+  box-shadow: 0 3px 15px #f1f1f1;
+}
+body.hulk-dark .hulk-fulldiv-linechart:after{
+  background: #171f29;
+  box-shadow: none;
+}
+.hulk-fulldiv-linechart h4.coinname{
+  margin-top: 30px;
+}
+.hulk-fulldiv-linechart .hulk-individual-marketcap canvas{
+  margin-left: -5px;
+}
+.hulk-fulldiv-linechart .coin-meta-data{
+  position: absolute;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hulk-fulldiv-linechart .coin-meta-data h5 i{
+  font-weight: 600;
+  vertical-align: middle;
+  margin-top: -5px;
+}
+.hulk-fulldiv-linechart .coin-meta-data h3{}
+.hulk-fulldiv-linechart .coin-meta-data h6{}
+
+.hulk-individual-marketcap iframe body{
+  margin: 0;
+}
+.coin-meta-data h4{
+  font-weight: 500;
+  margin-top: 12px;
+}

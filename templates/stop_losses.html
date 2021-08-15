@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+
+{% block title %}Stop Losses{% endblock %} 
+ {% block body %} 
+  
+
+  <div class="wrapper">
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+     <!-- Content Header (Page header) -->
+     <div class="content-header pt-5 pl-2 pr-2 mt-2">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-white">Stop Losses</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Stop Loss</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+
+    <!-- Main content -->
+    <div class="content pt-5 pl-2 pr-2 mt-2">
+      <div class="container-fluid">
+       
+        <!-- new row -->
+       <div class="row">
+     
+        <div class="col-lg-12">
+          <div class="card">
+            
+            <div class="card-body">
+              <form action="">
+
+                <div class="row mb-5 text-center">
+                  <div class="col-sm-12"><button href="#" class="btn btn-primary btn-connect hulk-btn">Select Your Token</button></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="amount_in">Amount In</label>
+    
+                      <div class="input-group input-text-select mb-3">
+                        <div class="input-group-prepend">
+                          <input id="amount_in" name="amount_in" placeholder="0" type="text" class="form-control hulk-input-lg" required>
+                        </div>
+                        <select class="custom-select ml-3" name="inputGroupSelect01">
+                          <option value="1">BNB</option>
+                          <option value="2">BTC</option>
+                          <option value="3">XRP</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for="trigger_amount">Trigger Amount</label>
+                    <div class="input-group mb-3">
+
+                      <input type="text" id="trigger_amount" name="trigger_amount" placeholder="0" class="form-control hulk-input-lg" required>
+                      <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-exchange-alt mr-4"></i> BUSD</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Trade Summary</label>
+                        <!-- <textarea class="form-control" rows="3" placeholder="Enter ... "> -->
+                        <!-- </textarea> -->
+                        <div class="summary">
+                          <p>Yur current Balance is 0, Solo</p>
+                          <p>you must hold 100 or 10 to use this feature</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                 
+
+                  <button id="submit" href="#" class="btn btn-primary btn-connect hulk-btn" disabled >Connect the Wallet</button>
+                  
+              </form>
+            </div>
+            
+          </div>
+
+        </div>
+
+       </div>
+        <!-- new row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+{% endblock  %}
