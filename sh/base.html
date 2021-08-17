@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png')}}"
+    />
+
+    <title>Addax | Dashboard</title>
+
+    <link
+      href="{{ url_for('static', filename='css/style.css')}}"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="slideshows hold-transition sidebar-mini addax-dark">
+    <!-- Preloader Start -->
+    <div id="preloader">
+      <div class="addax-load"></div>
+    </div>
+
+    <div class="wrapper">
+      <!-- Navbar -->
+      {% if "no-searchbar" == is_search %}
+      <nav
+        class="
+          main-header
+          navbar navbar-expand navbar-dark navbar-cinza
+          pt-5
+          pl-5
+          pr-5
+        "
+      >
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="index3.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Contact</a>
+          </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item swap">
+            <div class="swap">
+              <img
+                src="{{ url_for('static', filename='images/favicon.png')}}"
+                alt="Addax Swap"
+                class="mr-2"
+              />
+              <h5 class="swap_value">$</h5>
+              <h5 class="swap_value">1,35</h5>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-primary"
+              data-widget="control-sidebar"
+              data-slide="true"
+              href="#"
+              role="button"
+            >
+              <i class="pe-7s-wallet"></i> Connect Wallet
+            </a>
+          </li>
+        </ul>
+      </nav>
+      {% else %}
+      <nav
+        class="
+          main-header
+          navbar navbar-expand navbar-dark navbar-cinza
+          pt-5
+          pl-5
+          pr-5
+        "
+      >
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <!-- SEARCH FORM -->
+          <div class="addax-main-form d-md-block d-none">
+            <form class="form-inline ml-3">
+              <div class="input-group input-group-sm">
+                <input
+                  id="searchbar"
+                  name="search"
+                  class="form-control addax-input-lg"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  onkeyup="get_onchange_value(this.value)"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div style="position: absolute; margin-top: 35px; width: 600px">
+            <ul
+              class="list-group itemList"
+              id="list"
+              style="max-height: 350px; margin-bottom: 10px; overflow-y: auto"
+            ></ul>
+          </div>
+          <!-- <div
+            id="custom-search-input"
+            style="position: absolute; margin-top: 35px; width: 600px"
+          >
+            <ul
+              class="list-group"
+              id="list"
+              style="max-height: 300px; margin-bottom: 10px; overflow-y: scroll"
+            ></ul>
+          </div> -->
+
+          <div class="d-flex justify-content-center">
+            <div class="spinner-grow text-light" role="status" id="loading">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item swap">
+            <div class="swap">
+              <img
+                src="{{ url_for('static', filename='images/favicon.png')}}"
+                alt="Addax Swap"
+                class="mr-2"
+              />
+              <h5 class="swap_value mr-2">$</h5>
+              <h5 class="swap_value">1,35</h5>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link btn btn-primary"
+              data-widget="control-sidebar"
+              data-slide="true"
+              href="#"
+              role="button"
+            >
+              <i class="pe-7s-wallet"></i> Connect Wallet
+            </a>
+          </li>
+        </ul>
+      </nav>
+      {% endif %}
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link mt-3">
+          <div class="addax-logo mb-4">
+            <img
+              src="{{ url_for('static', filename='images/logo.png')}}"
+              alt="Addax Logo"
+              class=""
+            />
+          </div>
+
+          <div class="addax-icon mb-4 d-none">
+            <img
+              src="{{ url_for('static', filename='images/favicon.png')}}"
+              alt="Addax Logo"
+              class=""
+            />
+          </div>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar Menu -->
+          <nav class="mt-4">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <li class="nav-item">
+                {% if active_page == "dashboard" %}
+                <a href="/" class="nav-link active">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.7348 8.25839L5.3336 13.5306V19.2207C5.3336 19.3681 5.39212 19.5094 5.4963 19.6136C5.60048 19.7177 5.74178 19.7763 5.88911 19.7763L9.77978 19.7662C9.92663 19.7655 10.0672 19.7066 10.1708 19.6025C10.2744 19.4984 10.3325 19.3575 10.3325 19.2107V15.8877C10.3325 15.7403 10.391 15.599 10.4952 15.4949C10.5994 15.3907 10.7407 15.3322 10.888 15.3322H13.1101C13.2574 15.3322 13.3987 15.3907 13.5029 15.4949C13.6071 15.599 13.6656 15.7403 13.6656 15.8877V19.2082C13.6654 19.2813 13.6796 19.3538 13.7074 19.4214C13.7352 19.489 13.7761 19.5504 13.8277 19.6022C13.8793 19.6539 13.9406 19.695 14.0081 19.723C14.0756 19.7511 14.148 19.7655 14.2211 19.7655L18.1104 19.7763C18.2577 19.7763 18.399 19.7177 18.5032 19.6136C18.6074 19.5094 18.6659 19.3681 18.6659 19.2207V13.5267L12.266 8.25839C12.1908 8.19774 12.0971 8.16467 12.0004 8.16467C11.9038 8.16467 11.8101 8.19774 11.7348 8.25839ZM21.8462 11.8418L18.9437 9.44927V4.64027C18.9437 4.52977 18.8998 4.4238 18.8216 4.34566C18.7435 4.26753 18.6375 4.22363 18.527 4.22363H16.5827C16.4722 4.22363 16.3663 4.26753 16.2881 4.34566C16.21 4.4238 16.1661 4.52977 16.1661 4.64027V7.16125L13.0577 4.60381C12.7593 4.35834 12.385 4.22412 11.9987 4.22412C11.6124 4.22412 11.2381 4.35834 10.9398 4.60381L2.1512 11.8418C2.10901 11.8767 2.07411 11.9195 2.04848 11.9679C2.02286 12.0162 2.00701 12.0692 2.00185 12.1237C1.9967 12.1782 2.00232 12.2331 2.01842 12.2854C2.03451 12.3378 2.06076 12.3864 2.09565 12.4286L2.981 13.5049C3.0158 13.5472 3.0586 13.5822 3.10696 13.608C3.15532 13.6337 3.20828 13.6497 3.26282 13.6549C3.31735 13.6602 3.37239 13.6546 3.42477 13.6386C3.47716 13.6226 3.52587 13.5963 3.56811 13.5615L11.7348 6.83489C11.8101 6.77424 11.9038 6.74117 12.0004 6.74117C12.0971 6.74117 12.1908 6.77424 12.266 6.83489L20.4331 13.5615C20.4753 13.5964 20.5239 13.6226 20.5762 13.6387C20.6286 13.6548 20.6835 13.6604 20.738 13.6553C20.7925 13.6501 20.8455 13.6342 20.8938 13.6086C20.9422 13.583 20.985 13.5481 21.0199 13.5059L21.9052 12.4296C21.9401 12.3872 21.9662 12.3383 21.9821 12.2858C21.998 12.2332 22.0034 12.1781 21.9979 12.1234C21.9924 12.0688 21.9762 12.0158 21.9502 11.9675C21.9241 11.9191 21.8888 11.8764 21.8462 11.8418Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+                  <p>Dashboard</p>
+                </a>
+                {% else %}
+                <a href="/" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.7348 8.25839L5.3336 13.5306V19.2207C5.3336 19.3681 5.39212 19.5094 5.4963 19.6136C5.60048 19.7177 5.74178 19.7763 5.88911 19.7763L9.77978 19.7662C9.92663 19.7655 10.0672 19.7066 10.1708 19.6025C10.2744 19.4984 10.3325 19.3575 10.3325 19.2107V15.8877C10.3325 15.7403 10.391 15.599 10.4952 15.4949C10.5994 15.3907 10.7407 15.3322 10.888 15.3322H13.1101C13.2574 15.3322 13.3987 15.3907 13.5029 15.4949C13.6071 15.599 13.6656 15.7403 13.6656 15.8877V19.2082C13.6654 19.2813 13.6796 19.3538 13.7074 19.4214C13.7352 19.489 13.7761 19.5504 13.8277 19.6022C13.8793 19.6539 13.9406 19.695 14.0081 19.723C14.0756 19.7511 14.148 19.7655 14.2211 19.7655L18.1104 19.7763C18.2577 19.7763 18.399 19.7177 18.5032 19.6136C18.6074 19.5094 18.6659 19.3681 18.6659 19.2207V13.5267L12.266 8.25839C12.1908 8.19774 12.0971 8.16467 12.0004 8.16467C11.9038 8.16467 11.8101 8.19774 11.7348 8.25839ZM21.8462 11.8418L18.9437 9.44927V4.64027C18.9437 4.52977 18.8998 4.4238 18.8216 4.34566C18.7435 4.26753 18.6375 4.22363 18.527 4.22363H16.5827C16.4722 4.22363 16.3663 4.26753 16.2881 4.34566C16.21 4.4238 16.1661 4.52977 16.1661 4.64027V7.16125L13.0577 4.60381C12.7593 4.35834 12.385 4.22412 11.9987 4.22412C11.6124 4.22412 11.2381 4.35834 10.9398 4.60381L2.1512 11.8418C2.10901 11.8767 2.07411 11.9195 2.04848 11.9679C2.02286 12.0162 2.00701 12.0692 2.00185 12.1237C1.9967 12.1782 2.00232 12.2331 2.01842 12.2854C2.03451 12.3378 2.06076 12.3864 2.09565 12.4286L2.981 13.5049C3.0158 13.5472 3.0586 13.5822 3.10696 13.608C3.15532 13.6337 3.20828 13.6497 3.26282 13.6549C3.31735 13.6602 3.37239 13.6546 3.42477 13.6386C3.47716 13.6226 3.52587 13.5963 3.56811 13.5615L11.7348 6.83489C11.8101 6.77424 11.9038 6.74117 12.0004 6.74117C12.0971 6.74117 12.1908 6.77424 12.266 6.83489L20.4331 13.5615C20.4753 13.5964 20.5239 13.6226 20.5762 13.6387C20.6286 13.6548 20.6835 13.6604 20.738 13.6553C20.7925 13.6501 20.8455 13.6342 20.8938 13.6086C20.9422 13.583 20.985 13.5481 21.0199 13.5059L21.9052 12.4296C21.9401 12.3872 21.9662 12.3383 21.9821 12.2858C21.998 12.2332 22.0034 12.1781 21.9979 12.1234C21.9924 12.0688 21.9762 12.0158 21.9502 11.9675C21.9241 11.9191 21.8888 11.8764 21.8462 11.8418Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+                  <p>Dashboard</p>
+                </a>
+                {% endif %}
+              </li>
+
+              <li class="nav-item">
+                {% if active_page == "live-chart" %}
+                <a href="live_charts.html" class="nav-link active">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M21.375 17H4.5V5.125C4.5 4.77969 4.22031 4.5 3.875 4.5H2.625C2.27969 4.5 2 4.77969 2 5.125V18.25C2 18.9402 2.55977 19.5 3.25 19.5H21.375C21.7203 19.5 22 19.2203 22 18.875V17.625C22 17.2797 21.7203 17 21.375 17ZM20.125 5.75H15.5133C14.6781 5.75 14.2598 6.75977 14.8504 7.35039L16.116 8.61602L13.25 11.4824L10.384 8.61641C9.8957 8.12813 9.1043 8.12813 8.61641 8.61641L5.9332 11.2996C5.68906 11.5438 5.68906 11.9395 5.9332 12.1836L6.8168 13.0672C7.06094 13.3113 7.45664 13.3113 7.70078 13.0672L9.5 11.2676L12.366 14.1336C12.8543 14.6219 13.6457 14.6219 14.1336 14.1336L17.8836 10.3836L19.1492 11.6492C19.7398 12.2398 20.7496 11.8215 20.7496 10.9863V6.375C20.75 6.02969 20.4703 5.75 20.125 5.75Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>Live Charts</p>
+                </a>
+                {% else %}
+                <a href="live_charts.html" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M21.375 17H4.5V5.125C4.5 4.77969 4.22031 4.5 3.875 4.5H2.625C2.27969 4.5 2 4.77969 2 5.125V18.25C2 18.9402 2.55977 19.5 3.25 19.5H21.375C21.7203 19.5 22 19.2203 22 18.875V17.625C22 17.2797 21.7203 17 21.375 17ZM20.125 5.75H15.5133C14.6781 5.75 14.2598 6.75977 14.8504 7.35039L16.116 8.61602L13.25 11.4824L10.384 8.61641C9.8957 8.12813 9.1043 8.12813 8.61641 8.61641L5.9332 11.2996C5.68906 11.5438 5.68906 11.9395 5.9332 12.1836L6.8168 13.0672C7.06094 13.3113 7.45664 13.3113 7.70078 13.0672L9.5 11.2676L12.366 14.1336C12.8543 14.6219 13.6457 14.6219 14.1336 14.1336L17.8836 10.3836L19.1492 11.6492C19.7398 12.2398 20.7496 11.8215 20.7496 10.9863V6.375C20.75 6.02969 20.4703 5.75 20.125 5.75Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>Live Charts</p>
+                </a>
+                {% endif %}
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM5 5V19H19V5H5ZM17 17H15V10H17V17ZM13 17H11V7H13V17ZM9 17H7V12H9V17Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>Limit Orders</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                {% if active_page == "stop-loss" %}
+                <a href="stop_losses.html" class="nav-link active">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M21 21H4C3.44772 21 3 20.5523 3 20V3H5V19H21V21ZM19.627 16L15.457 11.918L13.229 14.1C12.8467 14.4715 12.2383 14.4715 11.856 14.1L7 9.344L8.373 8L12.543 12.082L14.77 9.9C15.1523 9.52848 15.7607 9.52848 16.143 9.9L21 14.656L19.627 16Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+                  <p>Stop Losses</p>
+                </a>
+                {% else %}
+                <a href="stop_losses.html" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M21 21H4C3.44772 21 3 20.5523 3 20V3H5V19H21V21ZM19.627 16L15.457 11.918L13.229 14.1C12.8467 14.4715 12.2383 14.4715 11.856 14.1L7 9.344L8.373 8L12.543 12.082L14.77 9.9C15.1523 9.52848 15.7607 9.52848 16.143 9.9L21 14.656L19.627 16Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+                  <p>Stop Losses</p>
+                </a>
+                {% endif %}
+              </li>
+
+              <li class="nav-item">
+                {% if active_page == "sniper" %}
+                <a href="sniper.html" class="nav-link active">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2C11.4477 2 11 2.44772 11 3V4.07C9.24011 4.29352 7.60439 5.09553 6.34996 6.34996C5.09553 7.60439 4.29352 9.24011 4.07 11H3C2.44772 11 2 11.4477 2 12C2 12.5523 2.44772 13 3 13H4.07C4.29352 14.7599 5.09553 16.3956 6.34996 17.65C7.60439 18.9045 9.24011 19.7065 11 19.93V21C11 21.5523 11.4477 22 12 22C12.5523 22 13 21.5523 13 21V19.93C14.7599 19.7065 16.3956 18.9045 17.65 17.65C18.9045 16.3956 19.7065 14.7599 19.93 13H21C21.5523 13 22 12.5523 22 12C22 11.4477 21.5523 11 21 11H19.93C19.7065 9.24011 18.9045 7.60439 17.65 6.34996C16.3956 5.09553 14.7599 4.29352 13 4.07V3C13 2.44772 12.5523 2 12 2ZM11 6.08V7C11 7.55228 11.4477 8 12 8C12.5523 8 13 7.55228 13 7V6.09C15.5 6.5 17.5 8.5 17.92 11H17C16.4477 11 16 11.4477 16 12C16 12.5523 16.4477 13 17 13H17.91C17.5 15.5 15.5 17.5 13 17.92V17C13 16.4477 12.5523 16 12 16C11.4477 16 11 16.4477 11 17V17.91C8.5 17.5 6.5 15.5 6.08 13H7C7.55228 13 8 12.5523 8 12C8 11.4477 7.55228 11 7 11H6.09C6.5 8.5 8.5 6.5 11 6.08ZM12 11C11.7348 11 11.4804 11.1054 11.2929 11.2929C11.1054 11.4804 11 11.7348 11 12C11 12.2652 11.1054 12.5196 11.2929 12.7071C11.4804 12.8946 11.7348 13 12 13C12.2652 13 12.5196 12.8946 12.7071 12.7071C12.8946 12.5196 13 12.2652 13 12C13 11.7348 12.8946 11.4804 12.7071 11.2929C12.5196 11.1054 12.2652 11 12 11Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+                  <p>
+                    Sniper
+                    <span class="right badge badge-danger">New</span>
+                  </p>
+                </a>
+                {% else %}
+                <a href="sniper.html" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2C11.4477 2 11 2.44772 11 3V4.07C9.24011 4.29352 7.60439 5.09553 6.34996 6.34996C5.09553 7.60439 4.29352 9.24011 4.07 11H3C2.44772 11 2 11.4477 2 12C2 12.5523 2.44772 13 3 13H4.07C4.29352 14.7599 5.09553 16.3956 6.34996 17.65C7.60439 18.9045 9.24011 19.7065 11 19.93V21C11 21.5523 11.4477 22 12 22C12.5523 22 13 21.5523 13 21V19.93C14.7599 19.7065 16.3956 18.9045 17.65 17.65C18.9045 16.3956 19.7065 14.7599 19.93 13H21C21.5523 13 22 12.5523 22 12C22 11.4477 21.5523 11 21 11H19.93C19.7065 9.24011 18.9045 7.60439 17.65 6.34996C16.3956 5.09553 14.7599 4.29352 13 4.07V3C13 2.44772 12.5523 2 12 2ZM11 6.08V7C11 7.55228 11.4477 8 12 8C12.5523 8 13 7.55228 13 7V6.09C15.5 6.5 17.5 8.5 17.92 11H17C16.4477 11 16 11.4477 16 12C16 12.5523 16.4477 13 17 13H17.91C17.5 15.5 15.5 17.5 13 17.92V17C13 16.4477 12.5523 16 12 16C11.4477 16 11 16.4477 11 17V17.91C8.5 17.5 6.5 15.5 6.08 13H7C7.55228 13 8 12.5523 8 12C8 11.4477 7.55228 11 7 11H6.09C6.5 8.5 8.5 6.5 11 6.08ZM12 11C11.7348 11 11.4804 11.1054 11.2929 11.2929C11.1054 11.4804 11 11.7348 11 12C11 12.2652 11.1054 12.5196 11.2929 12.7071C11.4804 12.8946 11.7348 13 12 13C12.2652 13 12.5196 12.8946 12.7071 12.7071C12.8946 12.5196 13 12.2652 13 12C13 11.7348 12.8946 11.4804 12.7071 11.2929C12.5196 11.1054 12.2652 11 12 11Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+                  <p>
+                    Sniper
+                    <span class="right badge badge-danger">New</span>
+                  </p>
+                </a>
+                {% endif %}
+              </li>
+
+              <li class="nav-item">
+                {% if active_page == "swap-token" %}
+                <a href="swap_token.html" class="nav-link active">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 8.56246V7.93746C2 7.41968 2.41973 6.99996 2.9375 6.99996H17V5.12496C17 4.29031 18.0117 3.87332 18.6004 4.46203L21.7254 7.58703C22.0915 7.95316 22.0915 8.54676 21.7254 8.91285L18.6004 12.0378C18.0139 12.6243 17 12.2131 17 11.375V9.49996H2.9375C2.41973 9.49996 2 9.08023 2 8.56246ZM21.0625 14.5H7V12.625C7 11.7924 5.98977 11.3718 5.39957 11.962L2.27457 15.087C1.90848 15.4532 1.90848 16.0468 2.27457 16.4128L5.39957 19.5378C5.9866 20.1248 7 19.7123 7 18.875V17H21.0625C21.5803 17 22 16.5802 22 16.0625V15.4375C22 14.9197 21.5803 14.5 21.0625 14.5Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>Swap Tokens</p>
+                </a>
+                {% else %}
+                <a href="swap_token.html" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 8.56246V7.93746C2 7.41968 2.41973 6.99996 2.9375 6.99996H17V5.12496C17 4.29031 18.0117 3.87332 18.6004 4.46203L21.7254 7.58703C22.0915 7.95316 22.0915 8.54676 21.7254 8.91285L18.6004 12.0378C18.0139 12.6243 17 12.2131 17 11.375V9.49996H2.9375C2.41973 9.49996 2 9.08023 2 8.56246ZM21.0625 14.5H7V12.625C7 11.7924 5.98977 11.3718 5.39957 11.962L2.27457 15.087C1.90848 15.4532 1.90848 16.0468 2.27457 16.4128L5.39957 19.5378C5.9866 20.1248 7 19.7123 7 18.875V17H21.0625C21.5803 17 22 16.5802 22 16.0625V15.4375C22 14.9197 21.5803 14.5 21.0625 14.5Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>Swap Tokens</p>
+                </a>
+                {% endif %}
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2C6.47581 2 2 6.47581 2 12C2 17.5242 6.47581 22 12 22C17.5242 22 22 17.5242 22 12C22 6.47581 17.5242 2 12 2ZM12 20.0645C7.54435 20.0645 3.93548 16.4556 3.93548 12C3.93548 7.54435 7.54435 3.93548 12 3.93548C16.4556 3.93548 20.0645 7.54435 20.0645 12C20.0645 16.4556 16.4556 20.0645 12 20.0645ZM14.4919 15.8548L11.0685 13.3669C10.9435 13.2742 10.871 13.129 10.871 12.9758V6.35484C10.871 6.08871 11.0887 5.87097 11.3548 5.87097H12.6452C12.9113 5.87097 13.129 6.08871 13.129 6.35484V12.0685L15.8226 14.0282C16.0403 14.1855 16.0847 14.4879 15.9274 14.7056L15.1694 15.75C15.0121 15.9637 14.7097 16.0121 14.4919 15.8548Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>History</p>
+                </a>
+              </li>
+
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <svg
+                    class="icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.97 19.05 5.05L16.56 6.05C16.04 5.65 15.48 5.32 14.87 5.07L14.49 2.42C14.46 2.18 14.25 2 14 2H10C9.75002 2 9.54002 2.18 9.51002 2.42L9.13002 5.07C8.52002 5.32 7.96002 5.66 7.44002 6.05L4.95002 5.05C4.72002 4.96 4.46002 5.05 4.34002 5.27L2.34002 8.73C2.21002 8.95 2.27002 9.22 2.46002 9.37L4.57002 11.02C4.53002 11.34 4.50002 11.67 4.50002 12C4.50002 12.33 4.53002 12.66 4.57002 12.98L2.46002 14.63C2.27002 14.78 2.22002 15.05 2.34002 15.27L4.34002 18.73C4.46002 18.95 4.73002 19.03 4.95002 18.95L7.44002 17.95C7.96002 18.35 8.52002 18.68 9.13002 18.93L9.51002 21.58C9.54002 21.82 9.75002 22 10 22H14C14.25 22 14.46 21.82 14.49 21.58L14.87 18.93C15.48 18.68 16.04 18.34 16.56 17.95L19.05 18.95C19.28 19.04 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98ZM12 15.5C10.07 15.5 8.50002 13.93 8.50002 12C8.50002 10.07 10.07 8.5 12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5Z"
+                      fill="#56657F"
+                    />
+                  </svg>
+
+                  <p>
+                    Settings
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Token Settings</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Profile Settings</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header pt-5 pl-5 pr-5">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-white">
+                  {% block pagename %} {% endblock pagename %}
+                </h1>
+              </div>
+              <!-- /.col -->
+              <!--          <div class="col-sm-6">-->
+              <!--            <ol class="breadcrumb float-sm-right">-->
+              {% block breadcrumbitem %} {% endblock breadcrumbitem %}
+              <!-- <li class="breadcrumb-item active">Dashboard</li> -->
+              <!--            </ol>-->
+              <!--          </div>&lt;!&ndash; /.col &ndash;&gt;-->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        {% block body %} {% endblock body %}
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+          <!-- Control sidebar content goes here -->
+          <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+          </div>
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+          <!-- To the right -->
+          <div class="float-right d-none d-sm-inline">Anything you want</div>
+          <!-- Default to the left -->
+          <strong
+            >Copyright &copy; 2021
+            <a href="https://addax.com">Addax</a>.</strong
+          >
+          All rights reserved.
+        </footer>
+      </div>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+  </body>
+</html>
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='js/plugins/jquery.min.js')}}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ url_for('static', filename='js/plugins/bootstrap.bundle.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='js/plugins/adminlte.min.js')}}"></script>
+<!-- Tradingview market charts -->
+<script src="{{ url_for('static', filename='js/plugins/tradingview/tv.js')}}"></script>
+<!-- Active Js Scripts -->
+<script src="{{ url_for('static', filename='js/bundle.js')}}"></script>
+<script src="{{ url_for('static', filename='js/active.js')}}"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#amount_in").on("input", function () {
+      $("#submit").prop("disabled", $(this).val().length < 0);
+    });
+    $("#amount_out").on("input", function () {
+      $("#submit").prop("disabled", $(this).val().length < 0);
+    });
+  });
+</script>
+
+<script>
+  document.getElementById("loading").style.display = "none";
+  // api url
+  function get_onchange_value() {
+    const value = document.getElementById("searchbar").value;
+    // Calling that async function
+    getapi(value);
+  }
+
+  // Defining async function
+  async function getapi(_val) {
+    document.getElementById("loading").style.display = "block";
+
+    const api_url = `http://127.0.0.1:3000/address/${_val}`;
+    // Storing response
+    const response = await fetch(api_url);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data, "DATAAAAAAAAAAAAAAAAAA");
+    if (response) {
+      hideloader();
+      // console.log("DONE");
+    }
+    show(data);
+  }
+
+  var searchList;
+
+  // Function to define innerHTML for HTML table
+  function show(data) {
+    if (data.length == 0) {
+      document.getElementById("list").innerHTML = "";
+    } else {
+      let list = ``;
+      // Loop to access all rows
+      for (let r of data) {
+        // list += `<li class="list-group-item" style="height: 45px;">
+        //   <p style="font-size: 14px; color: #000000;">${r.name}</p>
+        // </li>`;
+
+        if (r.image.includes("https://")) {
+          list +=
+            `
+            <li style="height: 45px;" class="list-group-item d-flex itemList justify-content-between align-items-center">
+              <p onclick="get_value(this,'` +
+            String(r.address) +
+            `')" style="font-size: 16px; color: #000000; margin-top:15px; font-weight: bold;">${r.name} <span style="font-size: 12px; color: #000000;">($${r.price})</span></p>
+              <div class="image-parent">
+              <img src="${r.image}" class="img-fluid" alt="quixote">
+              </div>
+            </li>
+            `;
+        } else {
+          list +=
+            `
+            <li style="height: 45px;" class="list-group-item d-flex itemList justify-content-between align-items-center">
+              <p onclick="get_value(this,'` +
+            String(r.address) +
+            `')" style="font-size: 16px; color: #000000; margin-top:15px; font-weight: bold;">${r.name} <span style="font-size: 12px; color: #000000;">($${r.price})</span></p>
+              <div class="image-parent">
+              <img src="/static/${r.image}" class="img-fluid" alt="quixote">
+              </div>
+            </li>
+            `;
+        }
+      }
+      // Setting innerHTML as tab variable
+      document.getElementById("list").innerHTML = list;
+      searchList = document.getElementById("list").innerHTML = list;
+    }
+  }
+
+  // Function to hide the loader
+  function hideloader() {
+    document.getElementById("loading").style.display = "none";
+  }
+
+  function searchFunction() {
+    let input = document.getElementById("searchbar").value;
+    input = input.toLowerCase();
+    let x = document.getElementsByClassName("itemList");
+
+    for (i = 0; i < x.length; i++) {
+      if (!x[i].innerHTML.toLowerCase().includes(input)) {
+        x[i].style.display = "none";
+      } else {
+        x[i].style.display = "list-item";
+      }
+    }
+  }
+
+  function get_value(_val, _address) {
+    var value = _val.textContent;
+    document.getElementById("searchbar").value = value;
+    // console.log(_address, typeof _address, "ADDRESSSSSSSSSSSSSSSSSSSS");
+    // alert(typeof _address, _address, "HELLo");
+    searchFunction();
+
+    // document.getElementById("list").innerHTML = "";
+  }
+
+  var ignoreClickOnMeElement = document.getElementById("searchbar");
+
+  document.addEventListener("click", function (event) {
+    var isClickInsideElement = ignoreClickOnMeElement.contains(event.target);
+    if (!isClickInsideElement) {
+      //Do something click is outside specified element
+      document.getElementById("list").innerHTML = "";
+    }
+  });
+
+  document.addEventListener("click", function (event) {
+    var isClickInsideElement = ignoreClickOnMeElement.contains(event.target);
+    if (isClickInsideElement) {
+      //Do something click is outside specified element
+      document.getElementById("list").innerHTML = searchList;
+    }
+  });
+
+  // function search_query() {
+  //   document.getElementsByClassName("itemList").style.display = "none";
+  // }
+</script>
+
+<!-- if (r.image.includes("https://")) {
+  list += `<ul class="list-group">
+<li class="list-group-item d-flex itemList justify-content-between align-items-center">
+  ${r.name}
+  <div class="image-parent">
+  <img src="${r.image}" class="img-fluid" class="img-fluid" alt="quixote">
+  </div>
+</li>
+</ul>`;
+} else {
+  list += `<ul class="list-group" style="height:50px;">
+<li class="list-group-item d-flex itemList justify-content-between align-items-center">
+  ${r.name}
+  <div class="image-parent">
+  <img src="/static/${r.image}" class="img-fluid" class="img-fluid" alt="quixote">
+  </div>
+</li>
+</ul>`;
+} -->

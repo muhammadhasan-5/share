@@ -19,3 +19,12 @@ var widget = new TradingView.widget({
      "mainSeriesProperties.candleStyle.wickDownColor": '#7f323f',
     }
 });
+// transaction...........................
+
+
+
+
+////////////////////////////////////////////////
+
+
+

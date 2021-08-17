@@ -37,8 +37,14 @@
     <div class="hulk-load"></div>
   </div>
   <!-- <div class="wrapper">      -->
-  <header>
+
+    {% if 'yes' in is_transaction_page %}
+    <div></div>
+    {% else %}
+      
    
+  <header>
+
     <div class="container-full-width">
         <div class="hulk-header blur">
             <div class="d-flex">
@@ -138,7 +144,7 @@
                       <i class="fas fa-search"></i>
                     </span>
                   </div>
-                  <input type="text" class="form-control" placeholder="Type your Search ...">
+                  <input onkeyup="get_onchange_value(this.value)" type="text" class="form-control" placeholder="Type your Search ..." id="searchbar" name="search">
                     <div class="input-group-append">
                       <a href="" class="iconh-effect d-flex">
                         <i class="fas fa-arrow-down margin-middle"></i>
@@ -150,7 +156,7 @@
                       </a>
                     </div>
                     <div class="input-group-append dismiss-bt">
-                        <a href="#" class="iconh-effect hulk-mega-dropdown-toggle d-flex">
+                        <a href="#" class="iconh-effect hulk-mega-dropdown-toggle d-flex" onclick="empty_search()">
                           <i class="pe-7s-close margin-middle"></i>
                         </a>
                     </div>
@@ -179,8 +185,13 @@
                           <!-- top volume section -->
                             <!-- /.card-header -->
                       <div class="card-body table-responsive p-0" style="height: 300px;">
-                        <table class="table table-head-fixed table-hover text-nowrap table-coins">
-                          <thead>
+                        <table id="list" class="table table-head-fixed table-hover text-nowrap table-coins">
+                          <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-light" role="status" id="loading">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                          <!-- <thead>
                             <tr>
                               <th></th>
                               <th>Name</th>
@@ -251,7 +262,7 @@
                               <td>$1.00 <span class="percent danger"><i class="fas fa-sort-down"></i> <small> 2.76% </small></td>
                             </tr>
                             
-                          </tbody>
+                          </tbody> -->
                         </table>
                       </div>
                       <!-- /.card-body -->
@@ -429,6 +440,8 @@
           <!-- mobile inner table menu here     -->
     </div>
 </header>
+{% endif %}
+
 <div class="wrapper">
 
 
@@ -447,6 +460,9 @@
 <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
+  {% if 'yes' in is_transaction_page %}
+  <div></div>
+  {% else %}
   <footer class="main-footer">
     <!-- To the right -->
     <div class="float-right d-none d-sm-inline">
@@ -455,12 +471,16 @@
     <!-- Default to the left -->
     <strong>Copyright &copy; 2021 <a href="https://hulktoken.com">HulkToken</a>.</strong> 
   </footer>
+  {% endif %}
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
 </body>
 </html>
+<script>
+  
+</script>
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='js/plugins/jquery.min.js') }}"></script>
 
@@ -474,10 +494,128 @@
 <!-- Tradingview market charts -->
 <script src="{{ url_for('static', filename='js/plugins/tradingview/tv.js') }}"></script>
 
-Active Js Scripts
+<!-- //Active Js Scripts -->
 <!-- <script src="{{ url_for('static', filename='js/main.js') }}"></script> -->
 <script src="{{ url_for('static', filename='js/active.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/bundle.js') }}"></script>
+<script>
 
+  document.getElementById("loading").style.display = "none";
+
+  function get_onchange_value() {
+    const value = document.getElementById("searchbar").value;
+    // Calling that async function
+    getapi(value);
+  }
+
+  // Defining async function
+  async function getapi(_val) {
+    document.getElementById("loading").style.display = "block";
+
+    const api_url = `/search_address?term=${_val}`;
+    // Storing response
+    const response = await fetch(api_url);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data, "DATAAAAAAAAAAAAAAAAAA");
+    if (response) {
+      hideloader();
+    }
+    show(data);
+  }
+
+  var searchList;
+  // Function to define innerHTML for HTML table
+  function show(data) {
+    if (data.length == 0) {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("list").innerHTML = `<p style="color:#fff;" class="text-center">No data found!</p>`;
+    } else {
+      let list = 
+        `<thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      // Loop to access all rows
+      for (let r of data) {
+        if (r.image.includes("https://")) {
+          list +=
+            `
+            <tr>
+              <td><div class="iconh-effect"><i class="far fa-heart"></i></div></td>
+              <td>
+                <div class="i-flex">
+                  <div class="coin-img">
+                    <img src="${r.image}" alt="${r.name}">
+                    
+                  </div>
+                  <span onclick="get_value(this,'` +
+            String(r.address) +
+            `')">${r.name}</span>
+                </div>
+              </td>
+              <td>${r.address}</td>
+              <td>$${r.price}</td>
+            </tr>
+            `;
+        } else {
+          list +=
+            `
+            <tr>
+              <td><div class="iconh-effect"><i class="far fa-heart"></i></div></td>
+              <td>
+                <div class="i-flex">
+                  <div class="coin-img">
+                    <img src="/static/${r.image}" alt="${r.name}">
+                    
+                  </div>
+                  <span onclick="get_value(this,'` +
+            String(r.address) +
+            `')">${r.name}</span>
+                </div>
+              </td>
+              <td>${r.address}</td>
+              <td>$${r.price}</td>
+            </tr>
+            `;
+        }
+      }
+      `</tbody>`
+      // Setting innerHTML as tab variable
+      document.getElementById("list").innerHTML = list;
+      searchList = document.getElementById("list").innerHTML = list;
+    }
+  }
+
+  // Function to hide the loader
+  function hideloader() {
+    document.getElementById("loading").style.display = "none";
+  }
+
+  function get_value(_val, _address) {
+    var value = _val.textContent;
+    document.getElementById("searchbar").value = value;
+    window.location.href = 'http://127.0.0.1:5000/live_charts?address='+_address; 
+
+    // console.log(_address, typeof _address, "ADDRESSSSSSSSSSSSSSSSSSSS");
+    // // alert(typeof _address, _address, "HELLo");
+    // searchFunction();
+
+    // document.getElementById("list").innerHTML = "";
+  }
+
+  function empty_search() {
+    var value = '';
+    document.getElementById("searchbar").value = value;
+  }
+
+
+</script>
 

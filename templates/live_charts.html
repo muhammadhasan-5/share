@@ -146,7 +146,7 @@
         <div class="row" id="tableRow">
           <div class="col-lg-12">
             <div class="card">
-              <table class="table table-striped table-hover table-dark">
+              <table class="table table-striped table-hover table-dark" id="transaction_tab">
                 <thead>
                   <tr class="success">
                     <td>Time</td>
@@ -163,20 +163,20 @@
                     <td>0.893 <span>USD</span></td>
                     <td>$256.018 <span>USD</span></td>
                     <td>PcSv2</td>
-                  </tr> -->
+                  </tr> 
                   <tr class="success">
                     <td><i class="fas fa-sort-up"></i> 1m ago</td>
                     <td>285.207 <span>BOG</span></td>
                     <td>0.893 <span>USD</span></td>
                     <td>$256.018 <span>USD</span></td>
                     <td>PcSv2</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-        <!-- end row -->
+               end row
 
 
         <div class="row" id="tokenRow">
@@ -295,10 +295,133 @@
       <li id="trendToggle">Trending</li>
     </ul>
 </footer>
+<!-- <script>
+  var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
+var graphql = JSON.stringify({
+  query: "{\r\n          ethereum(network: bsc) {\r\n            dexTrades(\r\n              options: {desc: [\"block.height\", \"tradeIndex\"], limit: 10, offset: 0}\r\n          \r\n              baseCurrency: {is: \"{{address}}\"}\r\n            ) {\r\n              block {\r\n                timestamp {\r\n                  time(format: \"%Y-%m-%d %H:%M:%S\")\r\n                }\r\n                height\r\n              }\r\n              tradeIndex\r\n              exchange {\r\n                fullName\r\n              }\r\n              smartContract {\r\n                address {\r\n                  address\r\n                  annotation\r\n                }\r\n              }\r\n              side\r\n              baseAmount\r\n              baseCurrency {\r\n                address\r\n                symbol\r\n              }\r\n              quoteAmount\r\n              quoteCurrency {\r\n                address\r\n                symbol\r\n              }\r\n              transaction {\r\n                hash\r\n              }\r\n            }\r\n          }\r\n        }",
+  variables: {}
+})
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: graphql,
+  redirect: 'follow'
+};
+
+fetch("https://graphql.bitquery.io?X-API-Key=BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY", requestOptions)
+  .then(response => response.json())
+  .then(result => console.log("Result====>",result))
+  // result.data.ethereum.dexTrades[0].block.timestamp.time
+  .catch(error => console.log('error=====>', error));
+</script> -->
 
 
 <script>
+  
+function onTimetokenprice(address,date){
+  return new Promise((resolve, reject)=>{
+    var myHeaders = new Headers();
+myHeaders.append("X-API-Key", "BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY");
+myHeaders.append("Content-Type", "application/json");
+
+var graphql = JSON.stringify({
+  query: `\n{\n          ethereum(network: bsc) {\n            dexTrades(\n              options: {desc: [\"block.height\",\"tradeIndex\"], limit: 1}\n              exchangeName: {in: [\"Pancake\", \"Pancake v2\"]}\n              baseCurrency: {is: \"${address}\"}\n              quoteCurrency: {is: \"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c\"}\n              date: {since: \"${date.split(" ").join("T") + ".000Z"}\", till: \"${date.split(" ").join("T") + ".000Z"}\"}\n            ) {\n              transaction {\n                hash\n              }\n              tradeIndex\n              smartContract {\n                address {\n                  address\n                }\n                contractType\n                currency {\n                  name\n                }\n              }\n              tradeIndex\n              block {\n                height\n              }\n              baseCurrency {\n                symbol\n                address\n              }\n              quoteCurrency {\n                symbol\n                address\n              }\n              quotePrice\n           \n            }\n          }\n        }\n\n`,
+  variables: {}
+})
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: graphql,
+  redirect: 'follow'
+};
+
+fetch("https://graphql.bitquery.io", requestOptions)
+  .then(response => response.json())
+  .then(result => resolve(result))
+  .catch(error => reject(error));
+        
+  })
+
+
+}
+
+function getwbnb(){
+    return new Promise((resolve, reject)=>{
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+    
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        console.log("fffffffffffffffffffffff")
+    
+        fetch("https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false", requestOptions).then((response)=>{
+            let k = response.json()
+            resolve(k)
+        })
+
+    })
+}
+  function addRow(time,traded,price,value,exchange,status) {
+          
+          var table = document.getElementById("transaction_tab");
+       
+          var rowCount = table.rows.length;
+          var row = table.insertRow(rowCount);
+          if(status == "BUY"){
+            row.className ="danger"
+            row.insertCell(0).innerHTML= `<i class="fas fa-sort-down"></i> ${time}`;
+          }
+          else{
+            row.className ="success"
+            row.insertCell(0).innerHTML=`<i class="fas fa-sort-up"></i> ${time}`;
+          }
+          row.insertCell(1).innerHTML= `${traded} <span>{{info.symbol}}</span>`;
+          row.insertCell(2).innerHTML= `${price} <span>USD</span>`;
+          row.insertCell(3).innerHTML= `${value} <span>BOG</span>`;
+          row.insertCell(4).innerHTML= `${exchange}`;
+       
+      }
+     
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      
+      var graphql = JSON.stringify({
+        query: "{\r\n          ethereum(network: bsc) {\r\n            dexTrades(\r\n              options: {desc: [\"block.height\", \"tradeIndex\"], limit: 10, offset: 0}\r\n          \r\n              baseCurrency: {is: \"{{address}}\"}\r\n            ) {\r\n              block {\r\n                timestamp {\r\n                  time(format: \"%Y-%m-%d %H:%M:%S\")\r\n                }\r\n                height\r\n              }\r\n              tradeIndex\r\n              exchange {\r\n                fullName\r\n              }\r\n              smartContract {\r\n                address {\r\n                  address\r\n                  annotation\r\n                }\r\n              }\r\n              side\r\n              baseAmount\r\n              baseCurrency {\r\n                address\r\n                symbol\r\n              }\r\n              quoteAmount\r\n              quoteCurrency {\r\n                address\r\n                symbol\r\n              }\r\n              transaction {\r\n                hash\r\n              }\r\n            }\r\n          }\r\n        }",
+        variables: {}
+      })
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: graphql,
+        redirect: 'follow'
+      };
+      
+      fetch("https://graphql.bitquery.io?X-API-Key=BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY", requestOptions)
+        .then(response => response.json())
+        
+        .then(result => {
+         result.data.ethereum.dexTrades.forEach(async (entry) => {
+         let price_obj= await onTimetokenprice('{{address}}',entry.block.timestamp.time)
+         //console.log(entry.block.timestamp.time,"Time");
+        let ww =await getwbnb()
+
+        let price = price_obj.data.ethereum.dexTrades[0].quotePrice * ww.wbnb.usd
+        addRow(entry.block.timestamp.time,entry.baseAmount,price,entry.baseAmount*price,entry.exchange.fullName,entry.side)
+        //console.log(price_obj.data.ethereum.dexTrades[0].quotePrice * ww.wbnb.usd,entry ,"new usd")
+
+    
+});
+         
+        }) 
+        .catch(error => console.log('error=====>', error));
+
+        
+    
 //  alert('{{text}}')
   // $(function(){
   //   //--------------

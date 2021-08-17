@@ -5,11 +5,15 @@
     var $window = $(window);
 
     // :: 1.0 Preloader Active Code
+    // $window.on('load', function () {
+    //     $('#preloader').fadeOut('slow', function () {
+    //         $(this).remove();
+    //     });
+    // });
     $window.on('load', function () {
-        $('#preloader').fadeOut('slow', function () {
-            $(this).remove();
-        });
+        $('#preloader').fadeOut(10);
     });
+    
 
 
     // :: 9.0 ScrollUp Active Code

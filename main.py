@@ -1,10 +1,17 @@
-from flask import Flask, render_template,send_from_directory,request
+from flask import Flask, render_template,send_from_directory,request,jsonify
+from string import digits
+import json
 import requests
 app = Flask(__name__)
 
 @app.route('/dashboard')
 def index():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html' , is_transaction_page='no')
+
+@app.route('/transaction')
+def transac():
+    return render_template('transaction.html', is_transaction_page='yes')
+
 
 @app.route('/live_charts')
 def live_charts():
@@ -29,21 +36,21 @@ def live_charts():
         'Content-Type': 'application/json'
     }
     transaction = requests.request("POST", url, headers=headers, data=payload)
-
+    # print(transaction.json()["data"]["ethereum"]["dexTrades"][0]["block"]['timestamp']["time"])
     # for itme in transaction.json()["data"]["ethereum"]["dexTrades"]:
     #     print(itme)
 
-    return render_template('live_charts.html', address=address,info=response.json()[0], name=response.json()[0]["name"], capaddress=capaddressresponse.json()["address"])
+    return render_template('live_charts.html', is_transaction_page='no', address=address,info=response.json()[0], name=response.json()[0]["name"], capaddress=capaddressresponse.json()["address"])
 
 
 
 @app.route('/stop_losses.html')
 def stop_losses():
-    return render_template('stop_losses.html', active_page="stop-loss")
+    return render_template('stop_losses.html',is_transaction_page='no', active_page="stop-loss")
 
 @app.route('/rot/index')
 def sep_chart():
-    return render_template('index.html',address=request.args.get("address"),name=request.args.get("name")
+    return render_template('index.html',is_transaction_page='no',address=request.args.get("address"),name=request.args.get("name")
                            ,sname=request.args.get("sname"))
 
 @app.route('/<path:path>')
@@ -55,14 +62,54 @@ def send_js_chart(path):
 
 @app.route('/sniper')
 def sniper():
-    return render_template('sniper.html', active_page="sniper")
+    return render_template('sniper.html',is_transaction_page='no', active_page="sniper")
 
 @app.route('/swap_token.html')
 def swap_token():
-    return render_template('swap_token.html', active_page="swap_token")
+    return render_template('swap_token.html', is_transaction_page='no',active_page="swap_token")
 
 @app.route('/summary.html')
 def summary():
-    return render_template('summary.html', active_page="summary")
+    return render_template('summary.html',is_transaction_page='no', active_page="summary")
+
+@app.route('/search_address')
+def search_address():
+    term = request.args.get('term')
+    response = requests.get("https://bscscan.com/searchHandler?term=" + term + "&filterby=2")
+    json_data = json.loads(response.content)
+
+    search_data = []
+
+    for list in json_data:
+        split_value = list.split("\t", 2)
+
+        split_name = split_value[0]
+        split_address = split_value[1]
+
+        value_price = split_value[2].split("$")[-1]
+        value_price_again = value_price.split("\t")[0]
+
+        # SPLIT IMAGE
+        split_image = split_value[-1].split()
+        join_image = ''.join(split_image)
+        trim_image = join_image.split("~", 1)
+        trim_image_again = trim_image[-1]
+
+        image_extension = trim_image_again.split(".")[-1]
+
+        if image_extension == "png":
+            trim_image_name = trim_image_again.split(".")[-2]
+            image_name = trim_image_name.lstrip(digits)
+            trim_image_again = "https://bscscan.com/token/images/" + image_name + ".png"
+        else:
+            trim_image_again = "images/default-coin.png"
+
+        search_data.append(
+            {"name": split_name, "address": split_address, "image": trim_image_again, "price": value_price_again})
+
+        print(value_price_again)
+
+    return jsonify(search_data[1:])
+
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=5000)
