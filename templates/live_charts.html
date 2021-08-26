@@ -59,7 +59,7 @@
                   
                   <div class="identity ml-5">
                     <p>Price</p>
-                    <h4 class="m-0 bt-green">$1.5392</h4>
+                    <h4 class="m-0 bt-green" id="price"></h4>
                   </div>
                 </div>
   
@@ -67,14 +67,14 @@
                   
                   <div class="identity ml-5">
                     <p>24h Change</p>
-                    <h4 class="m-0 bt-danger">$-14.823%</h4>
+                    <h4 class="m-0 bt-danger" id="24h"></h4>
                   </div>
                 </div>
               </div>
               <!-- header -->
               <div class="card-tools mt-3 d-xs-none d-sm-none d-md-block d-lg-block">
                 <!-- btn 4 -->
-                <button type="button" class="btn bg-secondary">BSCscan</button>
+                <button type="button" class="btn bg-secondary" onclick="BSCscan('{{address}}')">BSCscan</button>
                 <!-- btn 4 -->
                 <!-- btn 3 -->
                 <button type="button" class="btn bg-gradient-info">Swap</button>
@@ -103,15 +103,15 @@
                 <div class="summary-panel d-flex market_overview">
                     <span>
                       <p>Volume </p>
-                      <p class="m-0 text-white"><strong>$907,401 </strong></p>
+                      <p class="m-0 text-white"><strong id="volume"></strong></p>
                     </span>
                     <span>
                       <p>Liquidity </p>
-                      <p class="m-0 text-white"><strong>$12.907,401 </strong></p>
+                      <p class="m-0 text-white"><strong id="liquidity"></strong></p>
                     </span>
                     <span>
                       <p>MCap </p>
-                      <p class="m-0 text-white"><strong>$0 </strong></p>
+                      <p class="m-0 text-white"><strong id="market-cap"></strong></p>
                     </span>
                 </div>
   
@@ -163,8 +163,8 @@
                     <td>0.893 <span>USD</span></td>
                     <td>$256.018 <span>USD</span></td>
                     <td>PcSv2</td>
-                  </tr> 
-                  <tr class="success">
+                  </tr> -->
+                  <!-- <tr class="success">
                     <td><i class="fas fa-sort-up"></i> 1m ago</td>
                     <td>285.207 <span>BOG</span></td>
                     <td>0.893 <span>USD</span></td>
@@ -176,7 +176,7 @@
             </div>
           </div>
         </div>
-               end row
+        <!-- end row -->
 
 
         <div class="row" id="tokenRow">
@@ -295,99 +295,184 @@
       <li id="trendToggle">Trending</li>
     </ul>
 </footer>
-<!-- <script>
-  var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
 
-var graphql = JSON.stringify({
-  query: "{\r\n          ethereum(network: bsc) {\r\n            dexTrades(\r\n              options: {desc: [\"block.height\", \"tradeIndex\"], limit: 10, offset: 0}\r\n          \r\n              baseCurrency: {is: \"{{address}}\"}\r\n            ) {\r\n              block {\r\n                timestamp {\r\n                  time(format: \"%Y-%m-%d %H:%M:%S\")\r\n                }\r\n                height\r\n              }\r\n              tradeIndex\r\n              exchange {\r\n                fullName\r\n              }\r\n              smartContract {\r\n                address {\r\n                  address\r\n                  annotation\r\n                }\r\n              }\r\n              side\r\n              baseAmount\r\n              baseCurrency {\r\n                address\r\n                symbol\r\n              }\r\n              quoteAmount\r\n              quoteCurrency {\r\n                address\r\n                symbol\r\n              }\r\n              transaction {\r\n                hash\r\n              }\r\n            }\r\n          }\r\n        }",
-  variables: {}
-})
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: graphql,
-  redirect: 'follow'
-};
-
-fetch("https://graphql.bitquery.io?X-API-Key=BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY", requestOptions)
-  .then(response => response.json())
-  .then(result => console.log("Result====>",result))
-  // result.data.ethereum.dexTrades[0].block.timestamp.time
-  .catch(error => console.log('error=====>', error));
-</script> -->
 
 
 <script>
+
+  // setInterval(function(){ 
+  //   get_price()
+  // get_volume_and_liquidity()
+  // get_market_cap()
+  // get_wbnb()
+  // get_transaction()
+
+  // const today = new Date()
+  // const yesterday = new Date(today)
+  // yesterday.setDate(yesterday.getDate() - 1)
   
-function onTimetokenprice(address,date){
-  return new Promise((resolve, reject)=>{
+  // get_new_token_price(today.toISOString(),"0x2170ed0880ac9a755fd29b2688956bd959f933f8").then((e)=>{
+  //   get_new_token_price(yesterday.toISOString(),"0x2170ed0880ac9a755fd29b2688956bd959f933f8").then((f)=>{
+  //     // console.log((e-f)/e*100, e,f, '24H CHANGE')
+  //     let x = (e-f)/e*100;
+  //     let round_val = x.toFixed(3)
+  //     document.getElementById('24h').innerHTML = '$'+round_val+'%'
+  //   })
+  // })
+  
+  // console.log('INTERVALLLLLLLLLLLLL')
+  // }, 10000);
+
+function get_price() {
     var myHeaders = new Headers();
-myHeaders.append("X-API-Key", "BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY");
-myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-API-KEY", "BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY");
+    myHeaders.append("Content-Type", "application/json");
 
-var graphql = JSON.stringify({
-  query: `\n{\n          ethereum(network: bsc) {\n            dexTrades(\n              options: {desc: [\"block.height\",\"tradeIndex\"], limit: 1}\n              exchangeName: {in: [\"Pancake\", \"Pancake v2\"]}\n              baseCurrency: {is: \"${address}\"}\n              quoteCurrency: {is: \"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c\"}\n              date: {since: \"${date.split(" ").join("T") + ".000Z"}\", till: \"${date.split(" ").join("T") + ".000Z"}\"}\n            ) {\n              transaction {\n                hash\n              }\n              tradeIndex\n              smartContract {\n                address {\n                  address\n                }\n                contractType\n                currency {\n                  name\n                }\n              }\n              tradeIndex\n              block {\n                height\n              }\n              baseCurrency {\n                symbol\n                address\n              }\n              quoteCurrency {\n                symbol\n                address\n              }\n              quotePrice\n           \n            }\n          }\n        }\n\n`,
-  variables: {}
-})
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: graphql,
-  redirect: 'follow'
-};
-
-fetch("https://graphql.bitquery.io", requestOptions)
-  .then(response => response.json())
-  .then(result => resolve(result))
-  .catch(error => reject(error));
-        
-  })
-
-
-}
-
-function getwbnb(){
-    return new Promise((resolve, reject)=>{
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-    
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
-        console.log("fffffffffffffffffffffff")
-    
-        fetch("https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false", requestOptions).then((response)=>{
-            let k = response.json()
-            resolve(k)
-        })
-
+    var graphql = JSON.stringify({
+      query: "{\r\n            ethereum(network: bsc) {\r\n              dexTrades(\r\n                options: {desc: [\"block.height\",\"tradeIndex\"], limit: 1}\r\n                exchangeName: {in: [\"Pancake\", \"Pancake v2\"]}\r\n                baseCurrency: {is: \"{{capaddress}}\" }\r\n                quoteCurrency: {is: \"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c\"}\r\n\r\n              ) {\r\n                transaction {\r\n                  hash\r\n                }\r\n                tradeIndex\r\n                smartContract {\r\n                  address {\r\n                    address\r\n                  }\r\n                  contractType\r\n                  currency {\r\n                    name\r\n                  }\r\n                }\r\n                tradeIndex\r\n                block {\r\n                  height\r\n                }\r\n                baseCurrency {\r\n                  symbol\r\n                  address\r\n                }\r\n                quoteCurrency {\r\n                  symbol\r\n                  address\r\n                }\r\n                quotePrice\r\n             \r\n              }\r\n            }\r\n          }",
+      variables: {}
     })
-}
-  function addRow(time,traded,price,value,exchange,status) {
-          
-          var table = document.getElementById("transaction_tab");
-       
-          var rowCount = table.rows.length;
-          var row = table.insertRow(rowCount);
-          if(status == "BUY"){
-            row.className ="danger"
-            row.insertCell(0).innerHTML= `<i class="fas fa-sort-down"></i> ${time}`;
-          }
-          else{
-            row.className ="success"
-            row.insertCell(0).innerHTML=`<i class="fas fa-sort-up"></i> ${time}`;
-          }
-          row.insertCell(1).innerHTML= `${traded} <span>{{info.symbol}}</span>`;
-          row.insertCell(2).innerHTML= `${price} <span>USD</span>`;
-          row.insertCell(3).innerHTML= `${value} <span>BOG</span>`;
-          row.insertCell(4).innerHTML= `${exchange}`;
-       
-      }
-     
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: graphql,
+      redirect: 'follow'
+    };
+
+    fetch("https://graphql.bitquery.io", requestOptions)
+      .then(response => response.json())
+      .then(async result => {
+        let _multiplyer = await get_wbnb()
+        let price_value = result.data.ethereum.dexTrades[0].quotePrice * _multiplyer.wbnb.usd;
+        document.getElementById("price").innerHTML = '$'+sigfig(parseFloat(price_value),1);
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  function get_volume_and_liquidity() {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var graphql = JSON.stringify({
+      query: "query tokenDayDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {\r\n                                    tokenDayDatas(first: 1000, skip: $skip, where: {token: $address, date: $startTime}, orderBy: date, orderDirection: asc) {\r\n                                      date\r\n                                      dailyVolumeUSD\r\n                                      totalLiquidityUSD\r\n                                      __typename\r\n                                    }\r\n                                  }",
+      variables: {"address":"{{address}}","startTime":(new Date(new Date().toISOString().slice(0, 10)).getTime() / 1000),"skip":0}
+    })
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: graphql,
+      redirect: 'follow'
+    };
+
+    fetch("https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2", requestOptions)
+      .then(response => response.json())
+      .then(async result => {
+        let _multiplyer = await get_wbnb()
+        let vol_value = result.data.tokenDayDatas[0].dailyVolumeUSD * _multiplyer.wbnb.usd;
+        let liq_value = result.data.tokenDayDatas[0].totalLiquidityUSD * _multiplyer.wbnb.usd;
+
+        document.getElementById("volume").innerHTML = '$'+sigfig(parseFloat(vol_value),1);
+        document.getElementById("liquidity").innerHTML = '$'+sigfig(parseFloat(liq_value),1);
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  function get_market_cap() {
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+       };
+      fetch("https://api.bscscan.com/api?module=stats&action=tokenCsupply&contractaddress={{capaddress}}&apikey=DK835MZSQIEABA8R9BBQHHNXG7A2R991T3", requestOptions)
+      .then(response => response.json())
+      .then(async result => {
+        let _multiplyer = await get_wbnb()
+        let value = result.result * _multiplyer.wbnb.usd;
+        document.getElementById("market-cap").innerHTML = '$'+sigfig(parseFloat(value),1);
+      }) 
+      .catch(error => console.log('error', error));
+  }
+
+  function get_wbnb() {
+    return new Promise((resolve,reject)=>{
       var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+      };
+        
+      fetch("https://api.coingecko.com/api/v3/simple/price?ids=wbnb&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        resolve(result)
+      })
+      .catch(error => reject(error));
+    })
+
+  }
+    
+  function onTimetokenprice(address,date){
+    return new Promise((resolve, reject)=>{
+      var myHeaders = new Headers();
+      myHeaders.append("X-API-Key", "BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY");
+      myHeaders.append("Content-Type", "application/json");
+
+      var graphql = JSON.stringify({
+        query: `\n{\n          ethereum(network: bsc) {\n            dexTrades(\n              options: {desc: [\"block.height\",\"tradeIndex\"], limit: 1}\n              exchangeName: {in: [\"Pancake\", \"Pancake v2\"]}\n              baseCurrency: {is: \"${address}\"}\n              quoteCurrency: {is: \"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c\"}\n              date: {since: \"${date.split(" ").join("T") + ".000Z"}\", till: \"${date.split(" ").join("T") + ".000Z"}\"}\n            ) {\n              transaction {\n                hash\n              }\n              tradeIndex\n              smartContract {\n                address {\n                  address\n                }\n                contractType\n                currency {\n                  name\n                }\n              }\n              tradeIndex\n              block {\n                height\n              }\n              baseCurrency {\n                symbol\n                address\n              }\n              quoteCurrency {\n                symbol\n                address\n              }\n              quotePrice\n           \n            }\n          }\n        }\n\n`,
+        variables: {}
+      })
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: graphql,
+        redirect: 'follow'
+      };
+
+      fetch("https://graphql.bitquery.io", requestOptions)
+        .then(response => response.json())
+        .then(result => resolve(result))
+        .catch(error => reject(error));   
+      })
+  }
+
+  function addRow(time,traded,price,value,exchange,status) {    
+    var table = document.getElementById("transaction_tab");
+  
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+
+    // TIME DIFFERENCE
+    let expiration = time
+    const now = moment(expiration);
+    const exp = moment();
+
+    // console.log(exp.format(), "FORMATTTTTTTTTTTTT");
+
+    days = exp.diff(now, 'days');
+    hours = exp.subtract(days, 'days').diff(now, 'hours');
+    minutes = exp.subtract(hours, 'hours').diff(now, 'minutes');
+
+    // console.log(hours, minutes, "TIMEEEEEEEEE")
+    // TIME DIFFERENCE ENDDDD
+
+    if(status == "BUY"){
+      row.className ="danger"
+      row.insertCell(0).innerHTML= `<i class="fas fa-sort-down"></i> ${hours} hr ${minutes} min ago`;
+    }
+    else{
+      row.className ="success"
+      row.insertCell(0).innerHTML=`<i class="fas fa-sort-up"></i> ${hours} hr ${minutes} min ago`;
+    }
+    row.insertCell(1).innerHTML= `${traded} <span>{{info.symbol}}</span>`;
+    row.insertCell(2).innerHTML= `${price} <span>USD</span>`;
+    row.insertCell(3).innerHTML= `${value} <span>BOG</span>`;
+    row.insertCell(4).innerHTML= `${exchange}`;
+  }
+
+  function get_transaction() {
+    var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       
       var graphql = JSON.stringify({
@@ -401,27 +486,127 @@ function getwbnb(){
         redirect: 'follow'
       };
       
+    
       fetch("https://graphql.bitquery.io?X-API-Key=BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY", requestOptions)
         .then(response => response.json())
         
         .then(result => {
-         result.data.ethereum.dexTrades.forEach(async (entry) => {
+        let arr = []
+         result.data.ethereum.dexTrades.forEach(async (entry,i) => {
          let price_obj= await onTimetokenprice('{{address}}',entry.block.timestamp.time)
          //console.log(entry.block.timestamp.time,"Time");
-        let ww =await getwbnb()
-
+        let ww =await get_wbnb()
+        // console.log(typeof(arr), 'TYPEEEEEEEEEE')
         let price = price_obj.data.ethereum.dexTrades[0].quotePrice * ww.wbnb.usd
-        addRow(entry.block.timestamp.time,entry.baseAmount,price,entry.baseAmount*price,entry.exchange.fullName,entry.side)
-        //console.log(price_obj.data.ethereum.dexTrades[0].quotePrice * ww.wbnb.usd,entry ,"new usd")
+        arr.push({"time": entry.block.timestamp.time, "traded": entry.baseAmount, "price": price, "value": entry.baseAmount*price, "exchange": entry.exchange.fullName, "status": entry.side})
+        if(result.data.ethereum.dexTrades.length-1 == i){
+          get_date_order(arr)
 
-    
-});
+        }
+        // addRow(entry.block.timestamp.time,entry.baseAmount,price,entry.baseAmount*price,entry.exchange.fullName,entry.side)
+        //console.log(price_obj.data.ethereum.dexTrades[0].quotePrice * ww.wbnb.usd,entry ,"new usd")  
+      });
+
+      
          
-        }) 
-        .catch(error => console.log('error=====>', error));
+    }) 
+    .catch(error => console.log('error=====>', error));
 
-        
+  }
+
+  function get_date_order(_data) {
+    // console.log(_data, 'ARRRRRRRRRRRRRRRR')
+    // console.log(_data[0].time, 'TIMEEEEEEEEEEEEEE')
+    _data.sort(function (a,b) {
+      x = new Date(b.time).getTime()
+      y = new Date(a.time).getTime()
+
+      return x-y
+    })
+
+    // console.log(_data, 'DATAAAAAAAAAAAAAAAAA')
+    _data.forEach(element => {
+      addRow(element.time,element.traded,element.price,element.traded*element.price,element.exchange,element.status)
+      // addRow(time,traded,price,value,exchange,status)
+    });
+
+    // console.log(typeof(_data[0].time), _data, 'DTAAAAAAAAAAa')
+  }
+
+  async function get_new_token_price(date, address) {
+    return new Promise(async (resolve, reject) => {
+    var myHeaders = new Headers();
+    myHeaders.append("X-API-KEY", "BQY5beSeoIOk4UtS3QOomyrJGgjaYGJY");
+    myHeaders.append("Content-Type", "application/json");
+
+    var graphql = JSON.stringify({
+      query: `{\r\n          ethereum(network: bsc) {\r\n            dexTrades(\r\n              options: {desc: [\"block.height\",\"tradeIndex\"], limit: 1}\r\n              exchangeName: {in: [\"Pancake\", \"Pancake v2\"]}\r\n              baseCurrency: {is: \"{{address}}\"}\r\n              quoteCurrency: {is: \"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c\"}\r\n              date: {since: \"${date}\", till: \"${date}\"}\r\n            ) {\r\n              transaction {\r\n                hash\r\n              }\r\n              tradeIndex\r\n              smartContract {\r\n                address {\r\n                  address\r\n                }\r\n                contractType\r\n                currency {\r\n                  name\r\n                }\r\n              }\r\n              tradeIndex\r\n              block {\r\n                height\r\n              }\r\n              baseCurrency {\r\n                symbol\r\n                address\r\n              }\r\n              quoteCurrency {\r\n                symbol\r\n                address\r\n              }\r\n              quotePrice\r\n           \r\n            }\r\n          }\r\n        }`,
+      variables: {}
+    })
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: graphql,
+      redirect: 'follow'
+    };
+
+    fetch("https://graphql.bitquery.io", requestOptions)
+      .then(response => response.json())
+      .then(result => resolve(result.data.ethereum.dexTrades[0].quotePrice))
+      .catch(error => console.log('error', error));
+  })
+  }
+
+  const today = new Date()
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+  
+  get_new_token_price(today.toISOString(),"0x2170ed0880ac9a755fd29b2688956bd959f933f8").then((e)=>{
+    get_new_token_price(yesterday.toISOString(),"0x2170ed0880ac9a755fd29b2688956bd959f933f8").then((f)=>{
+      // console.log((e-f)/e*100, e,f, '24H CHANGE')
+      let x = (e-f)/e*100;
+      let round_val = x.toFixed(3)
+      document.getElementById('24h').innerHTML = '$'+round_val+'%'
+    })
+  })
+
+  get_price()
+  get_volume_and_liquidity()
+  get_market_cap()
+  get_wbnb()
+  get_transaction()
     
+  // Calculates significant figures with suffixes K/M/B/T, e.g. 1234 = 1.23K
+  function sigfig(num, sigfigs_opt) {
+    // Set default sigfigs to 3
+    sigfigs_opt = (typeof sigfigs_opt === "undefined") ? 3 : sigfigs_opt;
+    // Only assigns sig figs and suffixes for numbers > 1
+    if (num <= 1) return num.toPrecision(sigfigs_opt);
+    // Calculate for numbers > 1
+    var power10 = log10(num);
+    var power10ceiling = Math.floor(power10) + 1;
+    // 0 = '', 1 = 'K', 2 = 'M', 3 = 'B', 4 = 'T'
+    var SUFFIXES = ['', 'K', 'M', 'B', 'T','QD','QT','SX','SP','O','N'];
+    // 100: power10 = 2, suffixNum = 0, suffix = ''
+    // 1000: power10 = 3, suffixNum = 1, suffix = 'K'
+    var suffixNum = Math.floor(power10 / 3);
+    var suffix = SUFFIXES[suffixNum];
+    // Would be 1 for '', 1000 for 'K', 1000000 for 'M', etc.
+    var suffixPower10 = Math.pow(10, suffixNum * 3);
+    var base = num / suffixPower10;
+    var baseRound = base.toPrecision(sigfigs_opt);
+    return baseRound + suffix;
+  }
+
+  function log10(num) {
+    return (Math.round(Math.log(num) / Math.LN10 * 1e6) / 1e6);
+  }
+
+  function BSCscan(_address) {
+    // console.log(_address, 'ADDRESSS')
+    window.open("https://bscscan.com/token/"+_address, '_blank')
+  }
+
 //  alert('{{text}}')
   // $(function(){
   //   //--------------

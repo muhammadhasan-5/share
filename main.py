@@ -40,7 +40,7 @@ def live_charts():
     # for itme in transaction.json()["data"]["ethereum"]["dexTrades"]:
     #     print(itme)
 
-    return render_template('live_charts.html', is_transaction_page='no', address=address,info=response.json()[0], name=response.json()[0]["name"], capaddress=capaddressresponse.json()["address"])
+    return render_template('live_charts.html', is_transaction_page='no', address=address.lower(),info=response.json()[0], name=response.json()[0]["name"], capaddress=capaddressresponse.json()["address"])
 
 
 
@@ -112,4 +112,4 @@ def search_address():
     return jsonify(search_data[1:])
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=4000)
